@@ -1,5 +1,6 @@
 # Main information
-* Platform address : [0x13f9b087eb902229cf172cEBe4aAE8C890E6a7FB](https://mumbai.polygonscan.com/address/0x13f9b087eb902229cf172cEBe4aAE8C890E6a7FB#code)
+* Polygon platform address : [0x13f9b087eb902229cf172cEBe4aAE8C890E6a7FB](https://mumbai.polygonscan.com/address/0x13f9b087eb902229cf172cEBe4aAE8C890E6a7FB#code)
+* BSC testnet platform address : [0x13f9b087eb902229cf172cEBe4aAE8C890E6a7FB](https://testnet.bscscan.com/address/0xB9766eb9B900Fc44AA7042f07f41aaB532B32AA3#code)
 
 ## Installation
 Clone the repository and install the dependencies using the following command:
@@ -11,6 +12,7 @@ npm i
 Fill in the .env file and use the command:
 ```
 npx hardhat run scripts/deploy.ts --network polygon-mumbai
+npx hardhat run scripts/deploy.ts --network bscTestnet
 ```
 
 ## Custom task

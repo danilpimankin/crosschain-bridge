@@ -37,6 +37,7 @@ const chainIds = {
   "optimism-mainnet": 10,
   "polygon-mainnet": 137,
   "polygon-mumbai": 80001,
+  bscTestnet: 97,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -46,7 +47,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       jsonRpcUrl = "https://api.avax.network/ext/bc/C/rpc";
       break;
     case "bsc":
-      jsonRpcUrl = "https://bsc-dataseed1.binance.org";
+      jsonRpcUrl = "https://endpoints.omniatech.io/v1/bsc/testnet/public";
       break;
     default:
       jsonRpcUrl = "" + rpcUrl;
@@ -75,6 +76,7 @@ const config: {} = {
       optimisticEthereum: process.env.OPTIMISM_API_KEY || "",
       polygon: process.env.POLYGONSCAN_API_KEY || "",
       polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
+      bscTestnet: process.env.BSCSCAN_API_KEY
     },
   },
   gasReporter: {
@@ -97,6 +99,7 @@ const config: {} = {
     arbitrum: getChainConfig("arbitrum-mainnet"),
     avalanche: getChainConfig("avalanche"),
     bsc: getChainConfig("bsc"),
+    bscTestnet: getChainConfig("bscTestnet"),
     goerli: getChainConfig("goerli"),
     sepolia: getChainConfig("sepolia"),
     mainnet: getChainConfig("mainnet"),
