@@ -90,10 +90,10 @@ const config: {} = {
       accounts: {
         mnemonic,
       },
-      forking: {
-        url: process.env.RPC_URL,
-        blockNumber: 38800000
-      },
+      // forking: {
+      //   url: process.env.RPC_URL,
+      //   blockNumber: 38800000
+      // },
       chainId: chainIds.hardhat,
     },
     arbitrum: getChainConfig("arbitrum-mainnet"),

@@ -6,7 +6,7 @@ import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 
 describe("Bridge test", function () {
-  let rinkebyToken: Contract;
+  let sepoliaToken: Contract;
   let binanceToken: Contract;
   let owner: SignerWithAddress;
   let validator: SignerWithAddress;
@@ -36,7 +36,7 @@ describe("Bridge test", function () {
   this.beforeEach(async () => {
     [owner, validator, addr1] = await ethers.getSigners();
     const MyTokenFactory = await ethers.getContractFactory("Bridge");
-    rinkebyToken = await MyTokenFactory.deploy(validator.address);
+    sepoliaToken = await MyTokenFactory.deploy(validator.address);
     binanceToken = await MyTokenFactory.deploy(validator.address);
 
     from = owner.address;
@@ -48,7 +48,7 @@ describe("Bridge test", function () {
   describe("Functionality tests", async () => {
 
     it("should increase recipient balance", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const startBalance = await binanceToken.balanceOf(addr1.address);
       const signature = await getSignature(from, to, AMOUNT, ++nonce);
@@ -59,13 +59,13 @@ describe("Bridge test", function () {
     });
 
     it("the repeated swap will be successful", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const startBalance = await binanceToken.balanceOf(addr1.address);
       let signature = await getSignature(from, to, AMOUNT, ++nonce);
       await binanceToken.redeem(from, to, AMOUNT, NETWORK_ID, nonce, signature);
 
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
       signature = await getSignature(from, to, AMOUNT, ++nonce);
       await binanceToken.redeem(from, to, AMOUNT, NETWORK_ID, nonce, signature);
 
@@ -74,7 +74,7 @@ describe("Bridge test", function () {
     });
 
     it("should revert if redeem calls twice after once swap", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const signature = await getSignature(from, to, AMOUNT, ++nonce);
       await binanceToken.redeem(from, to, AMOUNT, NETWORK_ID, nonce, signature);
@@ -85,7 +85,7 @@ describe("Bridge test", function () {
     });
 
     it("should revert if to is incorrect", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const signature = await getSignature(from, to, AMOUNT, ++nonce);
 
@@ -95,7 +95,7 @@ describe("Bridge test", function () {
     });
 
     it("should revert if from is incorrect", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const signature = await getSignature(from, to, AMOUNT, ++nonce);
 
@@ -105,7 +105,7 @@ describe("Bridge test", function () {
     });
 
     it("should revert if amount is incorrect", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const signature = await getSignature(from, to, AMOUNT, ++nonce);
 
@@ -115,7 +115,7 @@ describe("Bridge test", function () {
     });
 
     it("should revert if signature is incorrect", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const signature = await getSignature(from, to, AMOUNT + 555, ++nonce);
 
@@ -125,14 +125,14 @@ describe("Bridge test", function () {
     });
 
     it("should emit SwapInitialized event", async () => {
-      const tx = rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      const tx = sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
       await expect(tx)
-        .to.be.emit(rinkebyToken, "SwapInitialized")
+        .to.be.emit(sepoliaToken, "SwapInitialized")
         .withArgs(from, to, AMOUNT, NETWORK_ID, NETWORK_ID, ++nonce);
     });
 
     it("should emit Redeem event", async () => {
-      await rinkebyToken.swap(to, AMOUNT, NETWORK_ID);
+      await sepoliaToken.swap(to, AMOUNT, NETWORK_ID);
 
       const signature = await getSignature(from, to, AMOUNT, ++nonce);
       const tx = binanceToken.redeem(from, to, AMOUNT, NETWORK_ID, nonce, signature);
